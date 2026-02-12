@@ -5,12 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For You</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+
 <style>
   body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #fff;
-    overflow-y: auto;
+    background: linear-gradient(180deg, #ffdee9, #ffc3c3);
+    transition: background 1.2s ease;
+    overflow-x: hidden;
+  }
+
+  body.deep-red {
+    background: linear-gradient(180deg, #8b0000, #b3002d);
   }
 
   .wrap {
@@ -24,6 +31,7 @@
     max-width: 360px;
     width: 100%;
     text-align: center;
+    position: relative;
   }
 
   img {
@@ -36,6 +44,8 @@
     font-size: 20px;
     font-weight: 500;
     margin-bottom: 18px;
+    min-height: 48px;
+    color: #4a0015;
   }
 
   button {
@@ -46,32 +56,48 @@
     font-size: 16px;
     margin: 8px 0;
     cursor: pointer;
+    transition: transform 0.4s ease;
   }
 
   .yes {
-    background: #000;
+    background: #b3002d;
     color: #fff;
   }
 
   .no {
-    background: #f4f4f4;
-    color: #444;
+    background: #fff;
+    color: #555;
+  }
+
+  .center-yes {
+    position: fixed;
+    left: 50%;
+    bottom: 22%;
+    transform: translateX(-50%) scale(1.2);
+    z-index: 10;
   }
 
   .message {
-    font-size: 14px;
-    line-height: 1.7;
-    color: #333;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    line-height: 1.8;
+    color: #fff;
     white-space: pre-line;
-    margin-top: 18px;
+    margin-top: 22px;
     padding-bottom: 40px;
+  }
+
+  .iknew {
+    font-size: 14px;
+    margin-top: 8px;
+    opacity: 0.8;
   }
 
   .heart {
     position: fixed;
     bottom: -10px;
-    font-size: 14px;
-    opacity: 0.3;
+    font-size: 16px;
+    opacity: 0.4;
     animation: rise 8s linear infinite;
     pointer-events: none;
   }
@@ -88,61 +114,104 @@
 <div class="wrap">
   <div class="card">
 
-    <!-- Image -->
     <img src="illustration.png" alt="Us">
 
-    <h1 id="question">Will you be my Valentine?</h1>
+    <h1 id="question"></h1>
 
     <div id="buttons">
-      <button class="yes" onclick="yes()">Yes</button>
-      <button class="no" onclick="trick()">No</button>
+      <button class="yes" id="yesBtn" onclick="yes()">Yes</button>
+      <button class="no" onclick="noClick()">No</button>
     </div>
 
     <div id="msg" class="message"></div>
+    <div id="iknew" class="iknew"></div>
+
   </div>
 </div>
 
-<!-- Background Music -->
 <audio id="bgmusic" loop preload="auto">
   <source src="urike-urike.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-  function yes() {
-    document.getElementById("buttons").style.display = "none";
-    document.getElementById("question").innerText = "🤍";
+  /* Word-by-word question */
+  const questionText = "Will you be my Valentine?";
+  let qi = 0;
+  const questionEl = document.getElementById("question");
 
-    playMusic();
+  function typeQuestion() {
+    if (qi < questionText.length) {
+      questionEl.innerText += questionText.charAt(qi);
+      qi++;
+      setTimeout(typeQuestion, 90);
+    }
+  }
+  typeQuestion();
 
-    document.getElementById("msg").innerText =
-`I love you, vamchhiluuuuu 🤍✨
+  let scale = 1;
 
-I never knew the day I met you that you would become this important to me.
-
-From anger to thoughts, from thoughts to love —
-you slowly became my favorite 🤍
-
-You are my best friend 🫶
-My safe place 🤍
-My forever ♾️💕
-
-Thank you, lovuu 🫀✨
-I love you more than words can say.`;
+  /* NO click = YES grows */
+  function noClick() {
+    scale += 0.15;
+    document.getElementById("yesBtn").style.transform = `scale(${scale})`;
   }
 
-  // Hidden “Yes only” trick 😌
-  function trick() {
-    yes();
+  /* YES click */
+  function yes() {
+    const yesBtn = document.getElementById("yesBtn");
+
+    yesBtn.classList.add("center-yes");
+
+    setTimeout(() => {
+      document.getElementById("buttons").style.display = "none";
+      document.body.classList.add("deep-red");
+      document.getElementById("question").innerText = "🤍";
+      playMusic();
+      showMessage();
+    }, 700);
+  }
+
+  /* Line-by-line message */
+  const lines = [
+    "I love you, vamchhiluuuuu 🤍✨",
+    "",
+    "I never knew the day I met you",
+    "that you would become this important to me.",
+    "",
+    "From anger to thoughts,",
+    "from thoughts to love —",
+    "you slowly became my favorite 🤍",
+    "",
+    "You are my best friend 🫶",
+    "My safe place 🤍",
+    "My forever ♾️💕",
+    "",
+    "Thank you, lovuu 🫀✨",
+    "I love you more than words can say."
+  ];
+
+  function showMessage() {
+    const msgEl = document.getElementById("msg");
+    let i = 0;
+
+    function addLine() {
+      if (i < lines.length) {
+        msgEl.innerText += lines[i] + "\n";
+        i++;
+        setTimeout(addLine, 350);
+      } else {
+        document.getElementById("iknew").innerText = "I knew it 😌";
+      }
+    }
+    addLine();
   }
 
   function playMusic() {
     const music = document.getElementById("bgmusic");
-    if (music.paused) {
-      music.play().catch(() => {});
-    }
+    music.play().catch(() => {});
   }
 
-  // Floating hearts
+  /* Floating hearts */
   setInterval(() => {
     const h = document.createElement("div");
     h.className = "heart";
@@ -150,7 +219,7 @@ I love you more than words can say.`;
     h.style.left = Math.random() * 100 + "vw";
     document.body.appendChild(h);
     setTimeout(() => h.remove(), 8000);
-  }, 900);
+  }, 600);
 </script>
 
 </body>
