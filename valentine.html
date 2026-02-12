@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You 🤍</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+  }
+
+  .card {
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
+  }
+
+  img {
+    width: 100%;
+    border-radius: 18px;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 18px;
+  }
+
+  button {
+    width: 100%;
+    padding: 14px;
+    border-radius: 14px;
+    border: none;
+    font-size: 16px;
+    margin: 8px 0;
+    cursor: pointer;
+  }
+
+  .yes {
+    background: #000;
+    color: #fff;
+  }
+
+  .no {
+    background: #f4f4f4;
+    color: #444;
+  }
+
+  .message {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #333;
+    white-space: pre-line;
+    margin-top: 16px;
+  }
+
+  .heart {
+    position: fixed;
+    bottom: -10px;
+    font-size: 14px;
+    opacity: 0.3;
+    animation: rise 8s linear infinite;
+  }
+
+  @keyframes rise {
+    from { transform: translateY(0); }
+    to { transform: translateY(-120vh); }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+  <div class="card">
+    <!-- Image -->
+    <img src="illustration.png" alt="Us">
+
+    <h1 id="question">Will you be my Valentine?</h1>
+
+    <div id="buttons">
+      <button class="yes" onclick="yes()">Yes</button>
+      <button class="no" onclick="trick()">No</button>
+    </div>
+
+    <div id="msg" class="message"></div>
+  </div>
+</div>
+
+<!-- Background Music -->
+<audio id="bgmusic" loop preload="auto">
+  <source src="urike-urike.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  function yes() {
+    document.getElementById("buttons").style.display = "none";
+    document.getElementById("question").innerText = "🤍";
+
+    playMusic();
+
+    document.getElementById("msg").innerText =
+`I love you, vamchhiluuuuu 🤍✨
+I never knew the day I met you that you would become this important to me 🌙
+From anger to thoughts, from thoughts to love — you slowly became my favorite 🌱
+
+You are my best friend 🫶
+My safe place 🤍
+My forever ♾️💕
+
+Thank you, lovuu 🫀✨
+
+I love you more than words can say.`;
+  }
+
+  // Hidden “Yes only” trick 😌
+  function trick() {
+    yes();
+  }
+
+  function playMusic() {
+    const music = document.getElementById("bgmusic");
+    if (music.paused) {
+      music.play();
+    }
+  }
+
+  // Soft floating hearts
+  setInterval(() => {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerText = "❤";
+    h.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 8000);
+  }, 900);
+</script>
+
+</body>
+</html>
