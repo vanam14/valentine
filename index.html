@@ -3,20 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You </title>
+<title>For You</title>
 
 <style>
   body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     background: #fff;
-    overflow: hidden;
+    overflow-y: auto;
   }
 
   .wrap {
     min-height: 100vh;
     display: flex;
-    align-items: center;
     justify-content: center;
     padding: 18px;
   }
@@ -64,7 +63,8 @@
     line-height: 1.7;
     color: #333;
     white-space: pre-line;
-    margin-top: 16px;
+    margin-top: 18px;
+    padding-bottom: 40px;
   }
 
   .heart {
@@ -73,6 +73,7 @@
     font-size: 14px;
     opacity: 0.3;
     animation: rise 8s linear infinite;
+    pointer-events: none;
   }
 
   @keyframes rise {
@@ -86,6 +87,7 @@
 
 <div class="wrap">
   <div class="card">
+
     <!-- Image -->
     <img src="illustration.png" alt="Us">
 
@@ -114,11 +116,16 @@
 
     document.getElementById("msg").innerText =
 `I love you, vamchhiluuuuu 🤍✨
-I never knew the day I met you that you would become this important to me 
-From anger to thoughts, from thoughts to love — you slowly became my favorite 
+
+I never knew the day I met you that you would become this important to me.
+
+From anger to thoughts, from thoughts to love —
+you slowly became my favorite 🤍
+
 You are my best friend 🫶
 My safe place 🤍
 My forever ♾️💕
+
 Thank you, lovuu 🫀✨
 I love you more than words can say.`;
   }
@@ -131,11 +138,11 @@ I love you more than words can say.`;
   function playMusic() {
     const music = document.getElementById("bgmusic");
     if (music.paused) {
-      music.play();
+      music.play().catch(() => {});
     }
   }
 
-  // Soft floating hearts
+  // Floating hearts
   setInterval(() => {
     const h = document.createElement("div");
     h.className = "heart";
@@ -148,5 +155,3 @@ I love you more than words can say.`;
 
 </body>
 </html>
-
-
